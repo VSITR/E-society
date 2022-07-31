@@ -55,6 +55,15 @@ Provide flexibility to members for managing and updating registered member detai
 
 At this point, you have all the necessary files to run the projet. You will still need to configure your MongoDB database in .env file.
 
+
+## Configuration of .env file
+.env file constists of two variables
+- MONGO_URI = mongodb+srv://{username}:{password}@cluster-society.xduxu.mongodb.net/societyDB?retryWrites=true&w=majority
+- SECRET_KEY = sk_test_51LRWpWSFFrMuplgrwEOm(Key from Stripe Payment Gateway)
+
+Create a new project on MongoDB with the name "E-Society". And a cluster named "Cluster-Society" under the same project.
+Use the username, password of your new project in the above string.
+
 ## Contributions
   
 Development contributors: [Nisarg Shah](https://github.com/nisarg0606/)
