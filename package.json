@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abhijeetpandit7/E-Society.git"
+    "url": "git+git@github.com:nisarg0606/E-society.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/abhijeetpandit7/E-Society/issues"
+    "url": "git@github.com:nisarg0606/E-society/issues"
   },
-  "homepage": "https://github.com/abhijeetpandit7/E-Society#readme",
+  "homepage": "git@github.com:nisarg0606/E-society.git#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
