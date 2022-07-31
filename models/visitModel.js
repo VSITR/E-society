@@ -9,8 +9,8 @@ const visitSchema = mongoose.Schema(
         }
     },
     {
-		timestamps: true,
-	}
+        timestamps: true,
+    }
 )
 
-exports.Visit = mongoose.model("visit", visitSchema);
+exports.Visit = mongoose.model("visit", visitSchema, "visits");
