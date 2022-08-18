@@ -97,11 +97,9 @@ app.get("/newRequest", (req, res) => {
 	}
 })
 
-app.get("/logout", (req, res) => {
-	req.logout(err => {
-		if (err) throw err;
-		res.redirect("/");
-	})
+app.get("/logout", function (req, res) {
+	req.logout();
+	res.redirect("/");
 });
 
 app.get("/loginFailure", (req, res) => {
@@ -151,7 +149,8 @@ app.get("/noticeboard", (req, res) => {
 				// Check if no notice is present
 				if (!foundSociety.noticeboard.length) {
 					foundSociety.noticeboard = [{
-						'subject': 'Access all important announcements, notices and circulars here.'
+						'subject': 'Access all important announcements, notices and circulars here.',
+						'user': 'Admin'
 					}]
 				}
 				res.render("noticeboard", { notices: foundSociety.noticeboard, isAdmin: req.user.isAdmin });
@@ -451,7 +450,8 @@ app.post("/notice", (req, res) => {
 			notice = {
 				'date': date.dateString,
 				'subject': req.body.subject,
-				'details': req.body.details
+				'details': req.body.details,
+				'user': req.user.firstName + " " + req.user.lastName
 			}
 			foundSociety.noticeboard.push(notice);
 			foundSociety.save(function () {
