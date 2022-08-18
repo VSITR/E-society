@@ -97,7 +97,7 @@ app.get("/newRequest", (req, res) => {
 	}
 })
 
-app.get("/logout", (req, res) => {
+app.get("/logout", function (req, res) {
 	req.logout();
 	res.redirect("/");
 });
