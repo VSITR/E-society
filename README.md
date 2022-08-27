@@ -66,8 +66,10 @@ Use the username, password of your new project in the above string.
 
 ## Contributions
   
-Development contributors: [Nisarg Shah](https://github.com/nisarg0606/)
-[Deesha Patel](https://github.com/deeshapatel02/)
+Development contributors: 
+- [Nisarg Shah](https://github.com/nisarg0606/)
+- [Deesha Patel](https://github.com/deeshapatel02/)
+- [Meet Guna](https://github.com/MeetGuna1534)
 
 <img src= 'https://user-images.githubusercontent.com/65078610/112977547-d114cd00-9173-11eb-9768-8dc29a38a98d.png' width="1200">
 <img src= 'https://user-images.githubusercontent.com/65078610/112977718-00c3d500-9174-11eb-8271-193384b88b5c.png' width="1200">
