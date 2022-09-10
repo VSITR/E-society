@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 const _ = require('lodash');
-const session = require('cookie-session');
+const session = require('express-session');
+const MongoDBSession = require('connect-mongodb-session')(session);
 const passport = require('passport');
 const user_collection = require("./models/userModel");
 const society_collection = require("./models/societyModel");
@@ -10,6 +11,14 @@ const visit_collection = require("./models/visitModel");
 const db = require(__dirname + '/config/db');
 const date = require(__dirname + '/date/date');
 
+
+const isAuth = (req, res, next) => {
+	if (req.session.isAuth) {
+		next();
+	} else {
+		res.redirect('/login');
+	}
+};
 // Access environment variables
 dotenv.config();
 const stripe = require('stripe')(process.env.SECRET_KEY);
@@ -18,35 +27,49 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 // Middleware to handle HTTP post requests
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+//session
+const store = new MongoDBSession({
+	uri: process.env.MONGO_URI,
+	collection: 'sessions',
+});
 app.use(session({
 	secret: "This is the secret key",
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	store: store
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 db.connectDB()
 
 app.get("/", (req, res) => {
-	// Track page visits + users & societies registered
-	visit_collection.Visit.findOne((err, pageVisit) => {
-		pageVisit.count += 1;
-		society_collection.Society.find((err, foundSociety) => {
-			const societyCount = foundSociety.length
-			const cities = foundSociety.map(society => society.societyAddress.city.toLowerCase())
-			const cityCount = [...new Set(cities)].length
-			user_collection.User.find((err, foundUser) => {
-				const userCount = foundUser.length
-				pageVisit.save(function () {
-					const pageVisits = pageVisit.count
-					res.render("index", { city: cityCount, society: societyCount, user: userCount, visit: pageVisits });
+	if (req.session.isAuth) {
+		res.redirect("/home");
+	}
+	else {
+		// Track page visits + users & societies registered
+		visit_collection.Visit.findOne((err, pageVisit) => {
+			pageVisit.count += 1;
+			society_collection.Society.find((err, foundSociety) => {
+				const societyCount = foundSociety.length
+				const cities = foundSociety.map(society => society.societyAddress.city.toLowerCase())
+				const cityCount = [...new Set(cities)].length
+				user_collection.User.find((err, foundUser) => {
+					const userCount = foundUser.length
+					pageVisit.save(function () {
+						const pageVisits = pageVisit.count
+						res.render("index", { city: cityCount, society: societyCount, user: userCount, visit: pageVisits });
+					})
 				})
 			})
 		})
-	})
+	}
 });
 
 app.get("/login", (req, res) => {
+	req.session.isAuth = false;
 	res.render("login");
 });
 
@@ -60,10 +83,11 @@ app.get("/register", (req, res) => {
 	res.render("register");
 });
 
-app.get("/home", (req, res) => {
+app.get("/home", isAuth, (req, res) => {
 	if (req.isAuthenticated()) {
 		// Conditionally render home as per user validation status
 		if (req.user.validation == 'approved') {
+			req.session.isAuth = true;
 			res.render("home");
 		} else if (req.user.validation == 'applied') {
 			res.render("homeStandby", {
@@ -378,7 +402,7 @@ app.post('/checkout-session', async (req, res) => {
 	res.json({ id: session.id });
 });
 
-app.post("/approveResident", (req, res) => {
+app.post("/approveResident", isAuth, (req, res) => {
 	const user_id = Object.keys(req.body.validate)[0]
 	const validate_state = Object.values(req.body.validate)[0]
 	user_collection.User.updateOne(
@@ -396,7 +420,7 @@ app.post("/approveResident", (req, res) => {
 	)
 })
 
-app.post("/complaint", (req, res) => {
+app.post("/complaint", isAuth, (req, res) => {
 	user_collection.User.findById(req.user.id, (err, foundUser) => {
 		if (!err && foundUser) {
 			complaint = {
@@ -414,7 +438,7 @@ app.post("/complaint", (req, res) => {
 	})
 })
 
-app.post("/closeTicket", (req, res) => {
+app.post("/closeTicket", isAuth, (req, res) => {
 	const user_id = Object.keys(req.body.ticket)[0]
 	const ticket_index = Object.values(req.body.ticket)[0]
 	const ticket = 'complaints.' + ticket_index
@@ -444,7 +468,7 @@ app.post("/closeTicket", (req, res) => {
 	})
 })
 
-app.post("/notice", (req, res) => {
+app.post("/notice", isAuth, (req, res) => {
 	society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
 		if (!err && foundSociety) {
 			notice = {
@@ -461,7 +485,7 @@ app.post("/notice", (req, res) => {
 	})
 })
 
-app.post("/editBill", (req, res) => {
+app.post("/editBill", isAuth, (req, res) => {
 	society_collection.Society.updateOne(
 		{ societyName: req.user.societyName },
 		{
@@ -484,7 +508,7 @@ app.post("/editBill", (req, res) => {
 	)
 })
 
-app.post("/editContacts", (req, res) => {
+app.post("/editContacts", isAuth, (req, res) => {
 	society_collection.Society.updateOne(
 		{ societyName: req.user.societyName },
 		{
@@ -508,7 +532,7 @@ app.post("/editContacts", (req, res) => {
 	)
 })
 
-app.post("/editProfile", (req, res) => {
+app.post("/editProfile", isAuth, (req, res) => {
 	user_collection.User.updateOne(
 		{ _id: req.user.id },
 		{
@@ -550,7 +574,7 @@ app.post("/editProfile", (req, res) => {
 	)
 })
 
-app.post("/newRequest", (req, res) => {
+app.post("/newRequest", isAuth, (req, res) => {
 	// Submit new signup only if society exists
 	society_collection.Society.findOne({ societyName: req.body.societyName }, (err, foundSociety) => {
 		if (!err && foundSociety) {
@@ -619,6 +643,7 @@ app.post("/signup", (req, res) => {
 						});
 					} else {
 						passport.authenticate("local")(req, res, function () {
+							req.session.isAuth = true;
 							res.redirect("/home");
 						});
 					}
@@ -675,6 +700,8 @@ app.post("/register", (req, res) => {
 								admin: user.username
 							});
 							society.save();
+							req.session.isAuth = true;
+							req.session.save();
 							res.redirect("/home");
 						});
 					}
@@ -698,10 +725,23 @@ app.post("/register", (req, res) => {
 	});
 });
 
-app.post("/login", passport.authenticate("local", {
-	successRedirect: "/home",
-	failureRedirect: "/loginFailure"
-}));
+app.post("/login", async (req, res) => {
+	try {
+		const user = await user_collection.User.findOne({ username: req.body.username });
+		if (user) {
+			await passport.authenticate("local")(req, res, function () {
+				req.session.isAuth = true;
+				res.redirect("/home");
+			});
+		}
+		else {
+			res.redirect("/loginFailure");
+		}
+	}
+	catch (err) {
+		console.log(err);
+	}
+});
 
 app.listen(
 	process.env.PORT || 3000,
