@@ -124,8 +124,10 @@ app.get("/newRequest", (req, res) => {
 app.get("/logout", function (req, res) {
 	req.logout();
 	req.session.isAuth = false;
-	req.session.destroy();
-	res.redirect("/");
+	req.session.destroy((err) => {
+		if (err) throw err;
+		res.redirect("/");
+	});
 });
 
 app.get("/loginFailure", (req, res) => {
