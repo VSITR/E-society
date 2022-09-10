@@ -123,6 +123,8 @@ app.get("/newRequest", (req, res) => {
 
 app.get("/logout", function (req, res) {
 	req.logout();
+	req.session.isAuth = false;
+	req.session.destroy();
 	res.redirect("/");
 });
 
@@ -141,7 +143,7 @@ app.get("/loginFailure", (req, res) => {
 	})
 });
 
-app.get("/residents", (req, res) => {
+app.get("/residents", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		const userSocietyName = req.user.societyName;
 		user_collection.User.find({ $and: [{ "societyName": userSocietyName }, { "validation": "approved" }] },
@@ -166,7 +168,7 @@ app.get("/residents", (req, res) => {
 	}
 })
 
-app.get("/noticeboard", (req, res) => {
+app.get("/noticeboard", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
 			if (!err && foundSociety) {
@@ -185,7 +187,7 @@ app.get("/noticeboard", (req, res) => {
 	}
 })
 
-app.get("/notice", (req, res) => {
+app.get("/notice", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.isAdmin) {
 		res.render("notice");
 	} else {
@@ -193,7 +195,7 @@ app.get("/notice", (req, res) => {
 	}
 })
 
-app.get("/bill", (req, res) => {
+app.get("/bill", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		user_collection.User.findById(req.user.id, (err, foundUser) => {
 			if (!err && foundUser) {
@@ -260,7 +262,7 @@ app.get("/bill", (req, res) => {
 	}
 })
 
-app.get("/editBill", (req, res) => {
+app.get("/editBill", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.isAdmin) {
 		society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
 			if (!err && foundSociety) {
@@ -272,7 +274,7 @@ app.get("/editBill", (req, res) => {
 	}
 })
 
-app.get("/helpdesk", (req, res) => {
+app.get("/helpdesk", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		// Conditonally render user/admin helpdesk
 		if (req.user.isAdmin) {
@@ -296,7 +298,7 @@ app.get("/helpdesk", (req, res) => {
 	}
 })
 
-app.get("/complaint", (req, res) => {
+app.get("/complaint", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		res.render("complaint");
 	} else {
@@ -304,7 +306,7 @@ app.get("/complaint", (req, res) => {
 	}
 })
 
-app.get("/contacts", (req, res) => {
+app.get("/contacts", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		const userSocietyName = req.user.societyName;
 		society_collection.Society.findOne({ "societyName": userSocietyName }, (err, foundSociety) => {
@@ -317,7 +319,7 @@ app.get("/contacts", (req, res) => {
 	}
 })
 
-app.get("/editContacts", (req, res) => {
+app.get("/editContacts", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.isAdmin) {
 		society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
 			if (!err && foundSociety) {
@@ -329,7 +331,7 @@ app.get("/editContacts", (req, res) => {
 	}
 })
 
-app.get("/profile", (req, res) => {
+app.get("/profile", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		user_collection.User.findById(req.user.id, (err, foundUser) => {
 			if (!err && foundUser) {
@@ -343,7 +345,7 @@ app.get("/profile", (req, res) => {
 	}
 })
 
-app.get("/editProfile", (req, res) => {
+app.get("/editProfile", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		user_collection.User.findById(req.user.id, (err, foundUser) => {
 			if (!err && foundUser) {

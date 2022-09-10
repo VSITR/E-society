@@ -3,45 +3,54 @@ body {
     font-family: sans-serif, Helvetica, Arial;
     background-image: url("https://www.transparenttextures.com/patterns/back-pattern.png");
 }
-#navlist{
-    margin-left: 5px; 
+
+#navlist {
+    margin-left: 5px;
 }
-#navbar{
+
+#navbar {
     padding: 0% 15% 0% 15%;
     font-size: 18px;
 }
-section{
+
+section {
     margin-top: -20px;
     min-height: 70vh;
 }
-.btn{
+
+.btn {
     margin: 20px 10px 5px 5px;
 }
-.banner{
+
+.banner {
     position: relative;
     width: 100%;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    background: linear-gradient(rgba(255,255,255,0.1), rgba(5, 5, 5,1)), url('images/night.jpg');
+    background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(5, 5, 5, 1)), url('images/night.jpg');
     background-size: cover;
 }
-.banner .content{
+
+.banner .content {
     max-width: 80%;
     text-align: center;
 }
-.banner .content h1{
+
+.banner .content h1 {
     font-size: 4em;
     margin-top: 20%;
     font-weight: bold;
     color: white;
 }
-.banner .content p{
+
+.banner .content p {
     font-weight: 600;
     color: white;
 }
+
 @media (min-width: 500px) {
-    .banner .content{
+    .banner .content {
         max-width: 60%;
     }
 }
@@ -49,25 +58,30 @@ section{
 .thumbnail {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.features{
+
+.features {
     display: block;
     margin: auto;
 }
-.home-container{
+
+.home-container {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
 }
-.box{
+
+.box {
     flex: 1;
     margin: 15px;
     margin-left: 5%;
     min-width: 300px;
 }
+
 .box p {
     font-size: 14px;
 }
-.box h2{
+
+.box h2 {
     text-transform: uppercase;
     letter-spacing: 3px;
     border-bottom: 2px solid #555;
@@ -75,7 +89,8 @@ section{
     margin-bottom: 15px;
     font-size: 20px;
 }
-.box h2::before{
+
+.box h2::before {
     content: "";
     width: 100px;
     height: 100%;
@@ -83,12 +98,14 @@ section{
     position: absolute;
     margin-top: 2px;
 }
-.box a{
+
+.box a {
     color: #aaa;
     text-decoration: none;
     display: inline-block;
 }
-.box a i{
+
+.box a i {
     background: #333;
     width: 40px;
     height: 40px;
@@ -97,17 +114,20 @@ section{
     margin-right: 5px;
     transition: 0.5s linear;
 }
+
 .box a:hover,
-.box a:hover i{
+.box a:hover i {
     color: crimson;
     border-radius: 50%;
 }
-.subcategories a{
+
+.subcategories a {
     display: block;
     margin-bottom: 10px;
     font-size: 1.2em;
 }
-.author{
+
+.author {
     width: 100%;
     background: black;
     text-align: center;
@@ -116,40 +136,49 @@ section{
     text-transform: uppercase;
     overflow: hidden;
 }
+
 .w3-third {
     margin-top: 50px;
 }
+
 .advertisement {
     display: flex;
     justify-content: center;
 }
 
 @media only screen and (max-width: 600px) {
-    .banner{
+    .banner {
         min-height: 70vh;
     }
-    .banner .content{
+
+    .banner .content {
         font-size: small;
     }
-    button{
+
+    button {
         margin-left: 70px;
     }
-    .w3-container h2{
-        font-size: 20px;     
+
+    .w3-container h2 {
+        font-size: 20px;
     }
+
     .footer-head {
         display: none;
     }
 }
 
-span{
+span {
     color: crimson;
 }
-footer{
+
+footer {
+    bottom: 0;
+    left: auto;
     width: 100%;
     background: #222;
     color: #aaa;
-    margin-bottom: 0px;   
+    margin-bottom: 0px;
 }
 
 /* Residents Page */
@@ -163,9 +192,10 @@ footer{
     background-color: rgb(233, 233, 233);
     border-radius: 2rem;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    max-width:1000px;
+    max-width: 1000px;
     margin: auto;
 }
+
 .flex-container>div {
     border-radius: 2rem;
     background-color: #f1f1f1;
@@ -176,26 +206,33 @@ footer{
     font-size: 20px;
     padding-top: 20px;
 }
+
 .list-group {
     width: 270px;
 }
+
 .list-group-item {
     font-size: 15px;
 }
+
 .zoom {
     transition: transform .2s;
 }
+
 .zoom:hover {
     transform: scale(1.10);
 }
+
 .flat-number {
     background-color: #d9534f;
     color: #f1f1f1;
     font-size: 15px;
 }
+
 .flat-owner {
     font-size: 15px;
 }
+
 .card-profile {
     margin-top: 50px;
     border: 0;
@@ -203,17 +240,20 @@ footer{
     background-color: white;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
+
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
+
 .container-profile {
     display: block;
     margin-left: auto;
     margin-right: auto;
     padding: 0 8% 15px;
 }
+
 .profile-text {
     border: black;
     padding: 2px;
@@ -222,7 +262,9 @@ footer{
 }
 
 /* Bill page */
-.bill-content, .bill-header, .bill-details {
+.bill-content,
+.bill-header,
+.bill-details {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -230,31 +272,40 @@ footer{
     margin: auto;
     text-align: center;
 }
-.bill-content td, .bill-content th {
+
+.bill-content td,
+.bill-content th {
     padding: 30px;
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
 }
-.bill-content th, tfoot td {
+
+.bill-content th,
+tfoot td {
     padding-top: 12px;
     padding-bottom: 12px;
     background-color: crimson;
     color: white;
 }
+
 tfoot td {
     opacity: 0.8;
     font-weight: bold;
 }
-.bill-content tr:nth-child(even){
+
+.bill-content tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
 .bill-content tr:hover {
     background-color: #ddd;
 }
+
 .bill-header {
     font-size: 16px;
 }
+
 .bill-details td {
     padding: 8px;
     text-align: left;
@@ -264,6 +315,7 @@ tfoot td {
 #stats .vertical-heading h2 {
     color: #fff;
 }
+
 .stats-item {
     background: rgba(61, 68, 68, 0.6);
     border-radius: 4px;
@@ -272,6 +324,7 @@ tfoot td {
     -webkit-transition: all 400ms linear;
     transition: all 400ms linear;
 }
+
 .stats-item i {
     font-size: 42px;
     color: #1B98E0;
@@ -279,30 +332,37 @@ tfoot td {
     -webkit-transition: all 400ms linear;
     transition: all 400ms linear;
 }
+
 .stats-item h3 {
     font-size: 32px;
     color: #fff;
     margin: 5px 0 5px 0;
 }
+
 .stats-item p {
     color: #fff;
     margin: 0;
 }
+
 .stats-item:hover {
     background: #1B98E0;
 }
+
 .stats-item:hover i {
     color: #212226;
     -webkit-transform: translateY(-20px);
     transform: translateY(-20px);
 }
+
 .stats-item {
     margin-bottom: 20px;
     padding: 25px 5px;
 }
+
 .stats-item i {
     font-size: 30px;
 }
+
 .stats-item h3 {
     font-size: 24px;
 }
