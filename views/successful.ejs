@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+    <div>
+        <% if (isAdmin) {%>
+            <div
+                style="background-color:lightslategray; color:white; padding:1px 0; border-radius:0.5rem; max-width:500px; margin:auto; display:block; margin-bottom:10px">
+                <h4>Approve New Residents</h4>
+            </div>
+            <form action="approveFunction" method="POST">
+                <% appliedResidents.forEach(user=> { %>
+                    <div
+                        style="max-width:500px; text-align:center; margin:auto; display:block; padding:10px 10%;background-color:whitesmoke; border-radius:0.5rem; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.01); margin-bottom: 10px;">
+                        <p>
+                            <%= user.firstName %>
+                                <%= user.lastName %> - <%= user.flatNumber %>
+                        </p>
+                        <div>
+                            <button style="margin-top: 0; border-radius: 15px;" class="btn btn-success btn-sm"
+                                type="submit" name=validate[<%=user._id %>] value="approved"><i
+                                    class="fas fa-check-circle fa-2x"></i></button>
+                            <button style="margin-top: 0; border-radius: 15px;" class="btn btn-danger btn-sm"
+                                type="submit" name=validate[<%=user._id %>] value="declined"><i
+                                    class="fas fa-times-circle fa-2x"></i></button>
+                        </div>
+                    </div>
+                    <% }) %>
+            </form>
+            <%} %>
+    </div>
+    <div>
+        <div style="padding:4%; padding-top: 0%; font-family:sans-serif; font-size:14px;">
+            <div class="container container-profile" style="max-width: 500px;">
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-profile my-5" style="margin-top: 10px;">
+                            <div class="card-body" style="padding:3% 8% 3%; text-align: center;">
+                                <p><i class="fas fa-user-clock"></i></p>
+                                <p style="font-size: 15px;"><b>Account pending for approval</b></p>
+                                <p>Your account will be active as soon as it is approved by your community.
+                                    'It usually takes 1-2 days for approval. If it is taking longer to get approval
+                                    contact your society admin.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center ">
+                <col-4>
+                    <a href="/logout" class="btn btn-danger btn-md" style="border-radius:3rem; max-width:180px;">
+                        Log Out
+                    </a>
+                </col-4>
+            </div>
+        </div>
+    </div>
+    <%- include('partials/footer') %>

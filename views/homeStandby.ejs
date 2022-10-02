@@ -21,9 +21,9 @@
     <div class="container-fluid" id="navbar">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="/home">
           <img src="images/diversity.png" alt="E-Society">
@@ -37,6 +37,7 @@
           <li><a href="#" disabled>Helpdesk</a></li>
           <li><a href="#" disabled>Emergency</a></li>
           <li><a href="#" disabled>Profile</a></li>
+          <li><a href="#" disabled>Function</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/logout">Logout</a></li>
@@ -52,15 +53,19 @@
           <div class="card card-profile my-5" style="margin-top: 10px;">
             <div class="card-body" style="padding:3% 8% 3%; text-align: center;">
               <p><i class="fas fa-5x <%= icon %>"></i></p>
-              <p style="font-size: 15px;"><b><%= title %></b></p>
-              <p><%= content %></p>
+              <p style="font-size: 15px;"><b>
+                  <%= title %>
+                </b></p>
+              <p>
+                <%= content %>
+              </p>
             </div>
           </div>
         </div>
-      </div>    
+      </div>
     </div>
     <div style="display: flex; justify-content: center ">
-      <col-4>   
+      <col-4>
         <a href="/logout" class="btn btn-danger btn-md" style="border-radius:3rem; max-width:180px;">
           Log Out
         </a>

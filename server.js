@@ -27,6 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 db.connectDB()
 
+
 app.get("/", (req, res) => {
 	// Track page visits + users & societies registered
 	visit_collection.Visit.findOne((err, pageVisit) => {
@@ -142,6 +143,31 @@ app.get("/residents", (req, res) => {
 	}
 })
 
+app.post("/function", (req, res) => {
+	if (req.isAuthenticated() && req.user.validation == 'approved') {
+		const userSocietyName = req.user.societyName;
+		user_collection.User.find({ $and: [{ "societyName": userSocietyName }, { "validation": "approved" }] },
+			(err, foundUsers) => {
+				if (!err && foundUsers) {
+					// Fetch users with applied status
+					user_collection.User.find({ $and: [{ "societyName": userSocietyName }, { "validation": "applied" }] },
+						(err, foundAppliedUsers) => {
+							if (!err && foundAppliedUsers) {
+								res.render("successful", {
+									societyResidents: foundUsers,
+									appliedResidents: foundAppliedUsers,
+									societyName: userSocietyName,
+									isAdmin: req.user.isAdmin
+								});
+							}
+						})
+				}
+			})
+	} else {
+		res.redirect("/function");
+	}
+})
+
 app.get("/noticeboard", (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
@@ -162,6 +188,7 @@ app.get("/noticeboard", (req, res) => {
 })
 
 app.get("/notice", (req, res) => {
+	console.log("Welcome")
 	if (req.isAuthenticated() && req.user.isAdmin) {
 		res.render("notice");
 	} else {
@@ -243,6 +270,39 @@ app.get("/editBill", (req, res) => {
 				res.render("editBill", { maintenanceBill: foundSociety.maintenanceBill });
 			}
 		})
+	} else {
+		res.redirect("/login");
+	}
+})
+
+/*app.post("/successful", (req, res) => {
+	console.log("booking")
+
+	user_collection.User.findById(req.user.id, (err, foundUser) => {
+		console.log("booking inner")
+		if (!err && foundUser) {
+			console.log("booking deeper")
+			booking = {
+				'date': date.dateString,
+				username: req.body.username,
+				societyName: req.body.societyName,
+				flatNumber: req.body.flatNumber,
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
+				phoneNumber: req.body.phoneNumber
+			}
+			foundUser.complaints.push(booking);
+			foundUser.save(function () {
+				res.redirect("/function");
+			})
+		}
+	})
+})*/
+
+
+app.get("/function", (req, res) => {
+	if (req.isAuthenticated() && req.user.validation == 'approved') {
+		res.render("function");
 	} else {
 		res.redirect("/login");
 	}
@@ -414,6 +474,11 @@ app.post("/complaint", (req, res) => {
 	})
 })
 
+/*app.post("/successful", (req, res) => {
+	res.render("successful");
+})*/
+
+
 app.post("/closeTicket", (req, res) => {
 	const user_id = Object.keys(req.body.ticket)[0]
 	const ticket_index = Object.values(req.body.ticket)[0]
@@ -483,6 +548,7 @@ app.post("/editBill", (req, res) => {
 		}
 	)
 })
+
 
 app.post("/editContacts", (req, res) => {
 	society_collection.Society.updateOne(
