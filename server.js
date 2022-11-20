@@ -197,6 +197,24 @@ app.get("/notice", isAuth, (req, res) => {
 	}
 })
 
+// delete notice by id
+app.post("/notice/:id", isAuth, (req, res) => {
+	if (req.isAuthenticated() && req.user.isAdmin) {
+		society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
+			if (!err && foundSociety) {
+				// delete notice by id
+				var index = foundSociety.noticeboard.findIndex(x => x._id == req.params.id);
+				foundSociety.noticeboard.splice(index, 1);
+				foundSociety.save();
+				res.redirect("/noticeboard");
+			}
+		})
+	} else {
+		res.redirect("/login");
+	}
+})
+
+
 app.get("/bill", isAuth, (req, res) => {
 	if (req.isAuthenticated() && req.user.validation == 'approved') {
 		user_collection.User.findById(req.user.id, (err, foundUser) => {
@@ -476,6 +494,7 @@ app.post("/notice", isAuth, (req, res) => {
 	society_collection.Society.findOne({ societyName: req.user.societyName }, (err, foundSociety) => {
 		if (!err && foundSociety) {
 			notice = {
+				'_id' : Math.floor(Math.random() * 1000000000),
 				'date': date.dateString,
 				'subject': req.body.subject,
 				'details': req.body.details,
