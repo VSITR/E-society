@@ -128,6 +128,7 @@ app.get("/logout", function (req, res) {
 		if (err) throw err;
 		res.redirect("/");
 	});
+});
 
 app.get("/loginFailure", (req, res) => {
 	const failureMessage = "Sorry, entered password was incorrect, Please double-check.";
